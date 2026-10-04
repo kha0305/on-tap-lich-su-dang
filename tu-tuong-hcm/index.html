@@ -460,7 +460,7 @@ function buildChapChips(){
     const b=document.createElement("button");
     b.className="chip"+(qChap===v?" active":"");
     b.textContent=label;
-    b.addEventListener("click",()=>{qChap=v;qWrongOnly=false;resetQuiz(false);buildChapChips();renderQuiz();});
+    b.addEventListener("click",()=>{qChap=v;qWrongOnly=false;resetQuiz();buildChapChips();renderQuiz();});
     box.appendChild(b);
   };
   mk(0,"Tất cả (90)");
