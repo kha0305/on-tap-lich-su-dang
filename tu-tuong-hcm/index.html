@@ -67,7 +67,29 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .formula{background:var(--card);border:1px dashed var(--accent);border-radius:12px;padding:12px 14px;margin:10px 0;font-size:.95rem}
 .formula b{color:var(--accent)}
 footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:14px}
-@media(max-width:560px){h1{font-size:1.2rem}}
+@media(max-width:640px){
+  .wrap{padding:12px 10px 60px}
+  h1{font-size:1.15rem}
+  .sub{font-size:.84rem}
+  header.top{align-items:flex-start}
+  .theme-btn{padding:7px 12px;font-size:.8rem;flex:0 0 auto}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;gap:6px;padding:8px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;padding:8px 13px;font-size:.84rem}
+  .chips{gap:6px}
+  .chip{padding:6px 11px;font-size:.8rem}
+  .toolbar{gap:6px}
+  .btn{padding:8px 14px;font-size:.84rem}
+  .score{font-size:.84rem;width:100%}
+  .card{padding:13px 12px}
+  .q-text{font-size:.97rem}
+  .q-head{flex-wrap:wrap;gap:4px}
+  .q-num{font-size:.74rem}
+  .opt{padding:9px 10px;font-size:.9rem}
+  .tip{font-size:.86rem}
+  .acc-head{padding:13px 14px;font-size:.94rem}
+  .tl{margin-left:4px}
+}
 </style>
 </head>
 <body>
@@ -441,16 +463,31 @@ function buildChapChips(){
     const b=document.createElement("button");
     b.className="chip"+(qChap===v?" active":"");
     b.textContent=label;
-    b.addEventListener("click",()=>{qChap=v;qWrongOnly=false;resetQuiz();buildChapChips();renderQuiz();});
+    b.addEventListener("click",()=>{qChap=v;qWrongOnly=false;rebuildOrder();buildChapChips();renderQuiz();});
     box.appendChild(b);
   };
   mk(0,"Tất cả (90)");
   for(let c=1;c<=6;c++)mk(c,"Chương "+c);
 }
-function resetQuiz(clearOrder=true){
+function rebuildOrder(){qOrder=QUIZ.map((_,i)=>i).filter(i=>qChap===0||QUIZ[i].c===qChap);}
+function resetQuiz(){
   qDone=new Set();qRight=new Set();qWrong=new Set();qPick=new Map();
-  if(clearOrder)qOrder=QUIZ.map((_,i)=>i).filter(i=>qChap===0||QUIZ[i].c===qChap);
+  rebuildOrder();
 }
+/* Luu tien do lam bai tren may */
+const STORE_KEY="hcm-quiz-v1";
+function saveProgress(){
+  try{localStorage.setItem(STORE_KEY,JSON.stringify({n:QUIZ.length,done:[...qDone],right:[...qRight],wrong:[...qWrong],pick:[...qPick]}));}catch(e){}
+}
+function loadProgress(){
+  try{
+    const s=JSON.parse(localStorage.getItem(STORE_KEY)||"null");
+    if(!s||s.n!==QUIZ.length)return;
+    qDone=new Set(s.done);qRight=new Set(s.right);qWrong=new Set(s.wrong);
+    qPick=new Map((s.pick||[]).map(([k,v])=>[+k,v]));
+  }catch(e){}
+}
+function clearProgress(){try{localStorage.removeItem(STORE_KEY);}catch(e){}}
 function updateScore(){
   $("scoreLine").innerHTML="Đã làm <b>"+qDone.size+"</b>/"+qOrder.length+" · Đúng <b>"+qRight.size+"</b>";
   $("wrongCount").textContent=qWrong.size;
@@ -488,7 +525,7 @@ function renderQuiz(){
           if(obi===q.a)ob.classList.add("correct");
         });
         if(oi===q.a){qRight.add(idx);}else{b.classList.add("wrong");qWrong.add(idx);}
-        tip.classList.add("show");updateScore();
+        tip.classList.add("show");updateScore();saveProgress();
       });
       card.appendChild(b);
     });
@@ -500,7 +537,7 @@ function renderQuiz(){
 }
 $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
-$("resetBtn").addEventListener("click",()=>{resetQuiz();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
+$("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 
 /* ---- Câu hỏi ngắn: đáp án hiện ngay bên dưới ---- */
 let fOrder=[];
@@ -533,7 +570,7 @@ function renderEssays(){
 }
 
 /* ---- Init ---- */
-buildChapChips();resetQuiz();renderQuiz();
+loadProgress();buildChapChips();rebuildOrder();renderQuiz();
 fOrder=FLASH.map((_,i)=>i);renderFlashList();
 renderEssays();
 </script>
