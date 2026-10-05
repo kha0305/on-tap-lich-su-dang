@@ -1013,6 +1013,18 @@ function resetQuiz(){
   qDone=new Set();qRight=new Set();qWrong=new Set();qPick=new Map();
   rebuildOrder();
 }
+/* Xao dap an ABCD khi an "Lam lai" (chong hoc vet); giu "Tat ca/Ca hai..." o cuoi */
+function shuffleOptions(){
+  QUIZ.forEach(q=>{
+    const pinned=[],rest=[];
+    q.o.forEach((opt,i)=>{(/^(t\u1ea5t c\u1ea3|c\u1ea3 hai)/i.test(opt.trim())?pinned:rest).push(i);});
+    shuffle(rest);
+    const order=rest.concat(pinned);
+    q.a=order.indexOf(q.a);
+    q.o=order.map(i=>q.o[i]);
+  });
+}
+
 /* Luu tien do lam bai tren may */
 const STORE_KEY="lsd-quiz-v1";
 function saveProgress(){
@@ -1078,7 +1090,7 @@ function renderQuiz(){
 }
 $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
-$("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
+$("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();shuffleOptions();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 /* ---- Muc luc cau hoi: nhan so cau de nhay toi, hien dung/sai ---- */
 /* ---- Muc luc dong theo tab ---- */
 const NAV_TITLES={quiz:"M\u1ee5c l\u1ee5c tr\u1eafc nghi\u1ec7m",flash:"M\u1ee5c l\u1ee5c c\u00e2u h\u1ecfi ng\u1eafn",essay:"M\u1ee5c l\u1ee5c t\u1ef1 lu\u1eadn",timeline:"M\u1ee5c l\u1ee5c timeline",keys:"M\u1ee5c l\u1ee5c \u00fd ch\u00ednh"};

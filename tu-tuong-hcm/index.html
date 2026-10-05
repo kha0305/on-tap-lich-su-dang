@@ -807,7 +807,7 @@ const QUIZ = [
    "Các phương án trên đều đúng"
   ],
   "a": 1,
-  "t": "Học thuộc nguyên văn đáp án B: \"<b>tổ chức cao nhất</b>... <b>đại biểu trung thành</b> lợi ích của cả dân tộc\"."
+  "t": "Học thuộc nguyên văn đáp án đúng: \"<b>tổ chức cao nhất</b>... <b>đại biểu trung thành</b> lợi ích của cả dân tộc\"."
  },
  {
   "c": 4,
@@ -1574,6 +1574,18 @@ function resetQuiz(){
   qDone=new Set();qRight=new Set();qWrong=new Set();qPick=new Map();
   rebuildOrder();
 }
+/* Xao dap an ABCD khi an "Lam lai" (chong hoc vet); giu "Tat ca/Ca hai..." o cuoi */
+function shuffleOptions(){
+  QUIZ.forEach(q=>{
+    const pinned=[],rest=[];
+    q.o.forEach((opt,i)=>{(/^(t\u1ea5t c\u1ea3|c\u1ea3 hai)/i.test(opt.trim())?pinned:rest).push(i);});
+    shuffle(rest);
+    const order=rest.concat(pinned);
+    q.a=order.indexOf(q.a);
+    q.o=order.map(i=>q.o[i]);
+  });
+}
+
 /* Luu tien do lam bai tren may */
 const STORE_KEY="hcm-quiz-v1";
 function saveProgress(){
@@ -1639,7 +1651,7 @@ function renderQuiz(){
 }
 $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
-$("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
+$("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();shuffleOptions();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 /* ---- Muc luc cau hoi: nhan so cau de nhay toi, hien dung/sai ---- */
 /* ---- Muc luc dong theo tab ---- */
 const NAV_TITLES={quiz:"Mục lục trắc nghiệm",flash:"Mục lục câu hỏi ngắn",essay:"Mục lục tự luận",timeline:"Mục lục timeline",keys:"Mục lục ý chính"};
