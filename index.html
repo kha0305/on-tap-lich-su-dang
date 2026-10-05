@@ -49,16 +49,6 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .score{font-size:.92rem;color:var(--muted)}
 .score b{color:var(--accent)}
-.fc-stage{perspective:1200px;margin:18px 0}
-.fc{position:relative;min-height:230px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s}
-.fc.flipped{transform:rotateY(180deg)}
-.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;justify-content:center}
-.fc-back{transform:rotateY(180deg);background:var(--accent-soft)}
-.fc-q{font-weight:700;font-size:1.08rem}
-.fc-a{font-size:1rem}
-.fc-hint{text-align:center;color:var(--muted);font-size:.82rem;margin-top:8px}
-.fc-nav{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:14px;flex-wrap:wrap}
-.fc-count{color:var(--muted);font-size:.9rem}
 .acc{border:1px solid var(--line);border-radius:14px;margin:12px 0;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
 .acc-head{padding:15px 16px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;gap:10px;align-items:center}
 .acc-head:hover{background:var(--accent-soft)}
@@ -79,7 +69,7 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .card ul{margin:6px 0;padding-left:20px}
 .card li{margin:6px 0;font-size:.94rem}
 footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:14px}
-@media(max-width:560px){h1{font-size:1.2rem}.fc{min-height:260px}}
+@media(max-width:560px){h1{font-size:1.2rem}}
 </style>
 </head>
 <body>
@@ -113,20 +103,13 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
   <div id="quizList"></div>
 </section>
 
-<!-- ============ FLASHCARD ============ -->
+<!-- ============ CÂU HỎI NGẮN ============ -->
 <section class="panel" id="panel-flash">
-  <div class="fc-stage">
-    <div class="fc" id="fcCard">
-      <div class="fc-face fc-front"><div class="fc-q" id="fcQ"></div><div class="fc-hint">Chạm để xem đáp án</div></div>
-      <div class="fc-face fc-back"><div class="fc-a" id="fcA"></div><div class="fc-hint">Chạm để quay lại câu hỏi</div></div>
-    </div>
+  <div class="toolbar">
+    <button class="btn ghost" id="fcShuffle">Xáo trộn thứ tự</button>
+    <span class="score">Đáp án hiện ngay bên dưới mỗi câu hỏi</span>
   </div>
-  <div class="fc-nav">
-    <button class="btn ghost" id="fcPrev">Trước</button>
-    <span class="fc-count" id="fcCount"></span>
-    <button class="btn ghost" id="fcNext">Sau</button>
-    <button class="btn ghost" id="fcShuffle">Xáo trộn</button>
-  </div>
+  <div id="flashList"></div>
 </section>
 
 <!-- ============ ESSAY ============ -->
@@ -495,21 +478,20 @@ $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();windo
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("resetBtn").addEventListener("click",()=>{resetQuiz();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 
-/* ---- Flashcard ---- */
-let fOrder=[],fPos=0;
-function renderFlash(){
-  const idx=fOrder[fPos],f=FLASH[idx];
-  $("fcCard").classList.remove("flipped");
-  setTimeout(()=>{
-    $("fcQ").textContent=f.q;
-    $("fcA").innerHTML='<b>Trả lời:</b><br><br>'+f.a;
-    $("fcCount").textContent=(fPos+1)+" / "+fOrder.length;
-  },120);
+/* ---- Câu hỏi ngắn: đáp án hiện ngay bên dưới ---- */
+let fOrder=[];
+function renderFlashList(){
+  const list=$("flashList");list.innerHTML="";
+  fOrder.forEach((idx,n)=>{
+    const f=FLASH[idx];
+    const d=document.createElement("div");d.className="card";
+    d.innerHTML='<div class="q-head"><span class="q-tag">Câu '+(n+1)+'</span></div>'
+      +'<p class="q-text">'+f.q+'</p>'
+      +'<div class="tip show"><b>Trả lời:</b> '+f.a+'</div>';
+    list.appendChild(d);
+  });
 }
-$("fcCard").addEventListener("click",()=>{$("fcCard").classList.toggle("flipped");});
-$("fcPrev").addEventListener("click",()=>{fPos=(fPos-1+fOrder.length)%fOrder.length;renderFlash();});
-$("fcNext").addEventListener("click",()=>{fPos=(fPos+1)%fOrder.length;renderFlash();});
-$("fcShuffle").addEventListener("click",()=>{shuffle(fOrder);fPos=0;renderFlash();});
+$("fcShuffle").addEventListener("click",()=>{shuffle(fOrder);renderFlashList();window.scrollTo({top:0,behavior:"smooth"});});
 
 /* ---- Essays ---- */
 function renderEssays(){
@@ -537,7 +519,7 @@ function renderTimeline(){
 
 /* ---- Init ---- */
 buildChapChips();resetQuiz();renderQuiz();
-fOrder=FLASH.map((_,i)=>i);renderFlash();
+fOrder=FLASH.map((_,i)=>i);renderFlashList();
 renderEssays();renderTimeline();
 </script>
 </body>
