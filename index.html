@@ -49,6 +49,15 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .score{font-size:.92rem;color:var(--muted)}
 .score b{color:var(--accent)}
+/* muc luc cau hoi + nut len dau trang */
+#qNav{display:none;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:8px;margin:14px 0 4px}
+#qNav.open{display:grid}
+.qn{padding:8px 0;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-weight:700;cursor:pointer;font-size:.85rem}
+.qn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
+.qn.bad{background:#dc2626;border-color:#dc2626;color:#fff}
+.card.flash{outline:2px solid var(--accent);outline-offset:2px}
+#toTop{position:fixed;right:16px;bottom:16px;width:46px;height:46px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:22px;line-height:1;cursor:pointer;box-shadow:var(--shadow);display:none;z-index:60}
+#toTop.show{display:block}
 .acc{border:1px solid var(--line);border-radius:14px;margin:12px 0;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
 .acc-head{padding:15px 16px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;gap:10px;align-items:center}
 .acc-head:hover{background:var(--accent-soft)}
@@ -118,10 +127,12 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
   <div class="chips" id="chapChips"></div>
   <div class="toolbar">
     <button class="btn ghost" id="shuffleBtn">Xáo trộn</button>
+    <button class="btn ghost" id="qNavBtn">Mục lục câu hỏi</button>
     <button class="btn ghost" id="wrongBtn">Chỉ ôn câu sai (<span id="wrongCount">0</span>)</button>
     <button class="btn ghost" id="resetBtn">Làm lại</button>
     <span class="score" id="scoreLine">Đã làm <b>0</b>/45 &middot; Đúng <b>0</b></span>
   </div>
+  <div id="qNav"></div>
   <div id="quizList"></div>
 </section>
 
@@ -1022,7 +1033,7 @@ function renderQuiz(){
   }
   show.forEach(idx=>{
     const q=QUIZ[idx];
-    const card=document.createElement("div");card.className="card";
+    const card=document.createElement("div");card.className="card";card.id="qcard-"+idx;
     const head=document.createElement("div");head.className="q-head";
     head.innerHTML='<span class="q-tag">'+qLabel(idx)+'</span><span class="q-num">'+CHAP_NAMES[q.c]+"</span>";
     const qt=document.createElement("p");qt.className="q-text";qt.textContent=q.q;
@@ -1046,7 +1057,7 @@ function renderQuiz(){
           if(obi===q.a)ob.classList.add("correct");
         });
         if(oi===q.a){qRight.add(idx);}else{b.classList.add("wrong");qWrong.add(idx);}
-        tip.classList.add("show");updateScore();saveProgress();
+        tip.classList.add("show");updateScore();saveProgress();renderQNav();
       });
       card.appendChild(b);
     });
@@ -1054,11 +1065,30 @@ function renderQuiz(){
     card.appendChild(tip);
     list.appendChild(card);
   });
-  updateScore();
+  updateScore();renderQNav();
 }
 $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
+/* ---- Muc luc cau hoi: nhan so cau de nhay toi, hien dung/sai ---- */
+function renderQNav(){
+  const nav=document.getElementById("qNav");if(!nav)return;nav.innerHTML="";
+  qOrder.forEach((idx,n)=>{
+    const b=document.createElement("button");
+    b.className="qn"+(qRight.has(idx)?" ok":qWrong.has(idx)?" bad":"");
+    b.textContent=n+1;b.title="Di toi cau "+(n+1);
+    b.addEventListener("click",()=>{
+      const el=document.getElementById("qcard-"+idx);
+      if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1300);}
+    });
+    nav.appendChild(b);
+  });
+}
+document.getElementById("qNavBtn").addEventListener("click",()=>{document.getElementById("qNav").classList.toggle("open");renderQNav();});
+/* ---- Nut len dau trang ---- */
+const toTopBtn=document.getElementById("toTop");
+window.addEventListener("scroll",()=>{toTopBtn.classList.toggle("show",window.scrollY>400);},{passive:true});
+toTopBtn.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
 
 /* ---- Câu hỏi ngắn: đáp án hiện ngay bên dưới ---- */
 let fOrder=[];
@@ -1104,5 +1134,6 @@ loadProgress();buildChapChips();rebuildOrder();renderQuiz();
 fOrder=FLASH.map((_,i)=>i);renderFlashList();
 renderEssays();renderTimeline();
 </script>
+<button id="toTop" title="Lên đầu trang" aria-label="Lên đầu trang">↑</button>
 </body>
 </html>
