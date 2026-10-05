@@ -50,8 +50,13 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .score{font-size:.92rem;color:var(--muted)}
 .score b{color:var(--accent)}
 /* muc luc cau hoi + nut len dau trang */
-#qNav{display:none;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:8px;margin:14px 0 4px}
-#qNav.open{display:grid}
+#qNavFab{position:fixed;right:16px;bottom:74px;width:46px;height:46px;border-radius:50%;background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:20px;line-height:1;cursor:pointer;box-shadow:var(--shadow);z-index:60}
+#qNavOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:80;padding:16px}
+#qNavOverlay.open{display:flex}
+#qNavPopup{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);max-width:430px;width:100%;max-height:72vh;display:flex;flex-direction:column}
+.qnav-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
+#qNavClose{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:15px;line-height:1}
+#qNav{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:8px;padding:14px;overflow-y:auto}
 .qn{padding:8px 0;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-weight:700;cursor:pointer;font-size:.85rem}
 .qn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
 .qn.bad{background:#dc2626;border-color:#dc2626;color:#fff}
@@ -124,12 +129,10 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
   <div class="chips" id="chapChips"></div>
   <div class="toolbar">
     <button class="btn ghost" id="shuffleBtn">Xáo trộn</button>
-    <button class="btn ghost" id="qNavBtn">Mục lục câu hỏi</button>
     <button class="btn ghost" id="wrongBtn">Chỉ ôn câu sai (<span id="wrongCount">0</span>)</button>
     <button class="btn ghost" id="resetBtn">Làm lại</button>
     <span class="score" id="scoreLine">Đã làm <b>0</b>/90 &middot; Đúng <b>0</b></span>
   </div>
-  <div id="qNav"></div>
   <div id="quizList"></div>
 </section>
 
@@ -199,6 +202,8 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
 </div>
 
 <button id="toTop" title="Lên đầu trang" aria-label="Lên đầu trang">↑</button>
+<button id="qNavFab" title="Mục lục câu hỏi" aria-label="Mục lục câu hỏi">☰</button>
+<div id="qNavOverlay"><div id="qNavPopup" role="dialog" aria-label="Mục lục câu hỏi"><div class="qnav-head"><b>Mục lục câu hỏi</b><button id="qNavClose" aria-label="Đóng">✕</button></div><div id="qNav"></div></div></div>
 <script>
 "use strict";
 /* ============ DỮ LIỆU TRẮC NGHIỆM: {c: chương, q: câu hỏi, o: 4 đáp án, a: chỉ số đáp án đúng (0-3), t: mẹo nhớ} */
@@ -1640,13 +1645,17 @@ function renderQNav(){
     b.className="qn"+(qRight.has(idx)?" ok":qWrong.has(idx)?" bad":"");
     b.textContent=n+1;b.title="Di toi cau "+(n+1);
     b.addEventListener("click",()=>{
+      document.getElementById("qNavOverlay").classList.remove("open");
       const el=document.getElementById("qcard-"+idx);
       if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1300);}
     });
     nav.appendChild(b);
   });
 }
-document.getElementById("qNavBtn").addEventListener("click",()=>{document.getElementById("qNav").classList.toggle("open");renderQNav();});
+const qNavFab=document.getElementById("qNavFab"),qNavOverlay=document.getElementById("qNavOverlay");
+qNavFab.addEventListener("click",()=>{renderQNav();qNavOverlay.classList.add("open");});
+document.getElementById("qNavClose").addEventListener("click",()=>qNavOverlay.classList.remove("open"));
+qNavOverlay.addEventListener("click",e=>{if(e.target===qNavOverlay)qNavOverlay.classList.remove("open");});
 /* ---- Nut len dau trang ---- */
 const toTopBtn=document.getElementById("toTop");
 window.addEventListener("scroll",()=>{toTopBtn.classList.toggle("show",window.scrollY>400);},{passive:true});
