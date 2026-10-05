@@ -771,7 +771,7 @@ const QUIZ = [
    "Về kinh tế"
   ],
   "a": 1,
-  "t": "\"Đảng muốn vững thì phải có <b>chủ nghĩa làm cốt</b>\" + nguyên tắc tổ chức chặt chẽ."
+  "t": "\"Đảng muốn vững thì phải có <b>chủ nghĩa làm cốt</b>\" + nguyên tắc tổ chức chặt chẽ. Đầy đủ là 4 mặt: chính trị – tư tưởng – tổ chức – đạo đức; trong 4 đáp án của đề thì B đúng nhất."
  },
  {
   "c": 4,
@@ -1583,8 +1583,10 @@ function loadProgress(){
   try{
     const s=JSON.parse(localStorage.getItem(STORE_KEY)||"null");
     if(!s||s.n!==QUIZ.length)return;
-    qDone=new Set(s.done);qRight=new Set(s.right);qWrong=new Set(s.wrong);
+    qDone=new Set(s.done);
     qPick=new Map((s.pick||[]).map(([k,v])=>[+k,v]));
+    qRight=new Set();qWrong=new Set();
+    qPick.forEach((oi,idx)=>{if(qDone.has(idx)&&QUIZ[idx]){if(oi===QUIZ[idx].a)qRight.add(idx);else qWrong.add(idx);}});
   }catch(e){}
 }
 function clearProgress(){try{localStorage.removeItem(STORE_KEY);}catch(e){}}
