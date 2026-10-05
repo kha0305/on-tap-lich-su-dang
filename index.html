@@ -60,6 +60,7 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .qn{padding:8px 0;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-weight:700;cursor:pointer;font-size:.85rem}
 .qn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
 .qn.bad{background:#dc2626;border-color:#dc2626;color:#fff}
+.qnl{grid-column:1/-1;display:block;width:100%;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;font-size:.9rem}
 .card.flash{outline:2px solid var(--accent);outline-offset:2px}
 #toTop{position:fixed;right:16px;bottom:16px;width:46px;height:46px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:22px;line-height:1;cursor:pointer;box-shadow:var(--shadow);display:none;z-index:60}
 #toTop.show{display:block}
@@ -165,7 +166,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
 <!-- ============ KEY POINTS ============ -->
 <section class="panel" id="panel-keys">
   <div class="card">
-    <h3>A. Số phải thuộc lòng</h3>
+    <h3 id="keysec-0">A. Số phải thuộc lòng</h3>
     <ul>
       <li><b>3/2/1930</b>: thành lập Đảng &middot; <b>10/1930</b>: Luận cương chính trị</li>
       <li><b>22/12/1944</b>: thành lập quân đội &middot; <b>19/12/1946</b>: Toàn quốc kháng chiến</li>
@@ -176,7 +177,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
       <li><b>1991</b>: ĐH VII (Cương lĩnh 91) &middot; <b>2006</b>: ĐH X (đảng viên làm KTTN)</li>
       <li><b>2011</b>: ĐH XI (Cương lĩnh 2011, 3 đột phá) &middot; <b>2016</b>: ĐH XII (hội nhập KT trọng tâm)</li>
     </ul>
-    <h3>B. Người – việc</h3>
+    <h3 id="keysec-1">B. Người – việc</h3>
     <ul>
       <li><b>Nguyễn Ái Quốc</b>: chủ trì Hội nghị thành lập Đảng + soạn Cương lĩnh chính trị đầu tiên</li>
       <li><b>Trần Phú</b>: soạn Luận cương 10/1930 + Tổng Bí thư đầu tiên</li>
@@ -184,7 +185,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
       <li><b>Hồ Chí Minh</b>: Tuyên ngôn 2/9 + Lời kêu gọi 19/12/1946 + Chủ tịch Ủy ban dân tộc giải phóng</li>
       <li><b>Phạm Văn Đồng</b>: trưởng đoàn Giơnevơ &middot; <b>Nguyễn Hữu Thọ</b>: Chủ tịch MTDTGPMN &middot; <b>Nguyễn Văn Tố</b>: Chủ tịch Ban Thường trực QH khóa I</li>
     </ul>
-    <h3>C. Cụm từ khóa (thấy là nhận ra đáp án)</h3>
+    <h3 id="keysec-2">C. Cụm từ khóa (thấy là nhận ra đáp án)</h3>
     <ul>
       <li><i>"điều kiện cốt yếu"</i> &rarr; vai trò lãnh đạo của Đảng (Luận cương 1930)</li>
       <li><i>"đi tới xã hội cộng sản"</i> &rarr; Cương lĩnh chính trị (Nguyễn Ái Quốc)</li>
@@ -197,7 +198,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
       <li><i>"động lực quan trọng"</i> &rarr; vai trò kinh tế tư nhân</li>
       <li><i>"trọng tâm là con người"</i> &rarr; xây dựng văn hóa</li>
     </ul>
-    <h3>D. Công thức đếm số lượng</h3>
+    <h3 id="keysec-3">D. Công thức đếm số lượng</h3>
     <ul>
       <li><b>Số 3</b>: 3 tổ chức cộng sản (1929) &middot; 3 giặc &middot; 3 văn kiện kháng chiến &middot; 3 lực lượng vũ trang &middot; 3 đột phá &middot; 3 nguyên tắc văn hóa &middot; 3 yếu tố ra đời Đảng &middot; 3 thắng lợi vĩ đại</li>
       <li><b>Số 4</b>: 4 nhiệm vụ "Kháng chiến, kiến quốc" &middot; 4 thành phần kinh tế</li>
@@ -207,7 +208,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
     </ul>
   </div>
   <div class="card">
-    <h3>E. 12 cặp dễ nhầm (đề hay gài bẫy ở đây)</h3>
+    <h3 id="keysec-4">E. 12 cặp dễ nhầm (đề hay gài bẫy ở đây)</h3>
     <ul>
       <li><b>Nguyễn Ái Quốc vs Trần Phú</b>: NAQ = chủ trì Hội nghị thành lập Đảng + soạn Cương lĩnh; Trần Phú = soạn Luận cương 10/1930 + Tổng Bí thư đầu tiên.</li>
       <li><b>Cương lĩnh vs Luận cương</b>: Cương lĩnh (NAQ): <i>"đi tới xã hội cộng sản"</i>; Luận cương (Trần Phú): <i>"điều kiện cốt yếu"</i>.</li>
@@ -229,7 +230,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
 
 <button id="toTop" title="Lên đầu trang" aria-label="Lên đầu trang">↑</button>
 <button id="qNavFab" title="Mục lục câu hỏi" aria-label="Mục lục câu hỏi">☰</button>
-<div id="qNavOverlay"><div id="qNavPopup" role="dialog" aria-label="Mục lục câu hỏi"><div class="qnav-head"><b>Mục lục câu hỏi</b><button id="qNavClose" aria-label="Đóng">✕</button></div><div id="qNav"></div></div></div>
+<div id="qNavOverlay"><div id="qNavPopup" role="dialog" aria-label="Mục lục câu hỏi"><div class="qnav-head"><b id="qNavTitle">Mục lục</b><button id="qNavClose" aria-label="Đóng">✕</button></div><div id="qNav"></div></div></div>
 <script>
 "use strict";
 var FC_RAW = [
@@ -1077,19 +1078,43 @@ $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();windo
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 /* ---- Muc luc cau hoi: nhan so cau de nhay toi, hien dung/sai ---- */
+/* ---- Muc luc dong theo tab ---- */
+const NAV_TITLES={quiz:"M\u1ee5c l\u1ee5c tr\u1eafc nghi\u1ec7m",flash:"M\u1ee5c l\u1ee5c c\u00e2u h\u1ecfi ng\u1eafn",essay:"M\u1ee5c l\u1ee5c t\u1ef1 lu\u1eadn",timeline:"M\u1ee5c l\u1ee5c timeline",keys:"M\u1ee5c l\u1ee5c \u00fd ch\u00ednh"};
+function activeTab(){const t=document.querySelector(".tab.active");return t&&t.dataset.tab?t.dataset.tab:"quiz";}
+function jumpTo(id,openAcc){
+  document.getElementById("qNavOverlay").classList.remove("open");
+  const el=document.getElementById(id);if(!el)return;
+  if(openAcc)el.classList.add("open");
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+  el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1300);
+}
+function navNumBtn(nav,label,title,target,cls){
+  const b=document.createElement("button");
+  b.className="qn"+(cls?" "+cls:"");b.textContent=label;if(title)b.title=title;
+  b.addEventListener("click",()=>jumpTo(target));nav.appendChild(b);
+}
 function renderQNav(){
   const nav=document.getElementById("qNav");if(!nav)return;nav.innerHTML="";
-  qOrder.forEach((idx,n)=>{
-    const b=document.createElement("button");
-    b.className="qn"+(qRight.has(idx)?" ok":qWrong.has(idx)?" bad":"");
-    b.textContent=n+1;b.title="Di toi cau "+(n+1);
-    b.addEventListener("click",()=>{
-      document.getElementById("qNavOverlay").classList.remove("open");
-      const el=document.getElementById("qcard-"+idx);
-      if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1300);}
+  const tab=activeTab();
+  document.getElementById("qNavTitle").textContent=NAV_TITLES[tab]||"M\u1ee5c l\u1ee5c";
+  if(tab==="quiz"){
+    qOrder.forEach((idx,n)=>{navNumBtn(nav,n+1,"Di toi cau "+(n+1),"qcard-"+idx,qRight.has(idx)?"ok":qWrong.has(idx)?"bad":"");});
+  }else if(tab==="flash"){
+    fOrder.forEach((idx,n)=>{navNumBtn(nav,n+1,(FLASH[idx].c?"Chuong "+FLASH[idx].c+" - ":"")+"Cau "+(n+1),"fcard-"+n);});
+  }else if(tab==="essay"){
+    ESSAYS.forEach((e,i)=>{
+      const b=document.createElement("button");b.className="qnl";b.textContent=(i+1)+". "+e.t;
+      b.addEventListener("click",()=>jumpTo("essay-"+i,true));nav.appendChild(b);
     });
-    nav.appendChild(b);
-  });
+  }else if(tab==="timeline"&&typeof TL_RAW!=="undefined"){
+    TL_RAW.forEach((it,i)=>{navNumBtn(nav,i+1,String(it[0]),"tl-"+i);});
+  }else if(tab==="keys"){
+    document.querySelectorAll("#panel-keys h3").forEach(h=>{
+      if(!h.id)return;
+      const b=document.createElement("button");b.className="qnl";b.textContent=h.textContent;
+      b.addEventListener("click",()=>jumpTo(h.id));nav.appendChild(b);
+    });
+  }
 }
 const qNavFab=document.getElementById("qNavFab"),qNavOverlay=document.getElementById("qNavOverlay");
 qNavFab.addEventListener("click",()=>{renderQNav();qNavOverlay.classList.add("open");});
@@ -1106,7 +1131,7 @@ function renderFlashList(){
   const list=$("flashList");list.innerHTML="";
   fOrder.forEach((idx,n)=>{
     const f=FLASH[idx];
-    const d=document.createElement("div");d.className="card";
+    const d=document.createElement("div");d.className="card";d.id="fcard-"+n;
     d.innerHTML='<div class="q-head"><span class="q-tag">Câu '+(n+1)+'</span></div>'
       +'<p class="q-text">'+f.q+'</p>'
       +'<div class="tip show"><b>Trả lời:</b> '+f.a+'</div>';
@@ -1118,8 +1143,8 @@ $("fcShuffle").addEventListener("click",()=>{shuffle(fOrder);renderFlashList();w
 /* ---- Essays ---- */
 function renderEssays(){
   const box=$("essayList");box.innerHTML="";
-  ESSAYS.forEach(e=>{
-    const d=document.createElement("div");d.className="acc";
+  ESSAYS.forEach((e,i)=>{
+    const d=document.createElement("div");d.className="acc";d.id="essay-"+i;
     d.innerHTML='<div class="acc-head"><span>'+e.t+'</span><span>＋</span></div><div class="acc-body">'+e.h+'</div>';
     d.querySelector(".acc-head").addEventListener("click",()=>{
       d.classList.toggle("open");
@@ -1132,8 +1157,8 @@ function renderEssays(){
 /* ---- Timeline ---- */
 function renderTimeline(){
   const box=$("tlList");box.innerHTML="";
-  TL_RAW.forEach(it=>{
-    const d=document.createElement("div");d.className="tl-item";
+  TL_RAW.forEach((it,i)=>{
+    const d=document.createElement("div");d.className="tl-item";d.id="tl-"+i;
     d.innerHTML='<span class="tl-year">'+it[0]+'</span> – '+it[1];
     box.appendChild(d);
   });

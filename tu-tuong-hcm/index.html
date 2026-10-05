@@ -60,6 +60,7 @@ h1{font-size:1.45rem;margin:.4em 0;color:var(--accent)}
 .qn{padding:8px 0;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-weight:700;cursor:pointer;font-size:.85rem}
 .qn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
 .qn.bad{background:#dc2626;border-color:#dc2626;color:#fff}
+.qnl{grid-column:1/-1;display:block;width:100%;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;font-size:.9rem}
 .card.flash{outline:2px solid var(--accent);outline-offset:2px}
 #toTop{position:fixed;right:16px;bottom:16px;width:46px;height:46px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:22px;line-height:1;cursor:pointer;box-shadow:var(--shadow);display:none;z-index:60}
 #toTop.show{display:block}
@@ -154,7 +155,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
 <!-- ============ KEY POINTS ============ -->
 <section class="panel" id="panel-keys">
   <div class="card">
-    <h3 style="color:var(--accent);margin-top:0">Dòng thời gian cần nhớ</h3>
+    <h3 id="keysec-0" style="color:var(--accent);margin-top:0">Dòng thời gian cần nhớ</h3>
     <div class="tl">
       <div class="tl-item"><span class="tl-year">1890</span> – Nguyễn Sinh Cung (Hồ Chí Minh) sinh tại Nghệ An.</div>
       <div class="tl-item"><span class="tl-year">1911</span> – Ra đi tìm đường cứu nước từ bến Nhà Rồng.</div>
@@ -176,7 +177,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
     </div>
   </div>
   <div class="card">
-    <h3 style="color:var(--accent);margin-top:0">Công thức nhớ nhanh</h3>
+    <h3 id="keysec-1" style="color:var(--accent);margin-top:0">Công thức nhớ nhanh</h3>
     <div class="formula"><b>3 nguồn gốc TTHCM:</b> truyền thống dân tộc + tinh hoa văn hoá nhân loại + chủ nghĩa Mác–Lênin (quyết định bước phát triển về chất).</div>
     <div class="formula"><b>Nội dung cốt lõi:</b> độc lập dân tộc <i>gắn liền với</i> chủ nghĩa xã hội. Độc lập dân tộc là <b>điều kiện tiên quyết</b>, CNXH là mục tiêu.</div>
     <div class="formula"><b>3 ngọn cờ đoàn kết quốc tế:</b> phong trào cộng sản &amp; công nhân → <b>độc lập dân tộc gắn liền CNXH</b> · các dân tộc → <b>độc lập, tự do, bình đẳng</b> · lực lượng tiến bộ → <b>hoà bình trong công lý</b>.</div>
@@ -187,7 +188,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
     <div class="formula"><b>Nhà nước:</b> của dân, do dân, vì dân · pháp trị đi đôi với đức trị.</div>
   </div>
   <div class="card">
-    <h3 style="color:var(--accent);margin-top:0">Cụm từ khóa hay bị bẫy</h3>
+    <h3 id="keysec-2" style="color:var(--accent);margin-top:0">Cụm từ khóa hay bị bẫy</h3>
     <ul>
       <li><span class="kw">1991 – Đại hội VII</span>: năm Đảng chính thức dùng thuật ngữ "Tư tưởng Hồ Chí Minh".</li>
       <li><span class="kw">Hiệu triệu tổng khởi nghĩa (8/1945)</span> ≠ <span class="kw">Lời kêu gọi toàn quốc kháng chiến (19/12/1946)</span>: cùng mở đầu "Hỡi đồng bào..." nhưng khác thời điểm.</li>
@@ -203,7 +204,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
 
 <button id="toTop" title="Lên đầu trang" aria-label="Lên đầu trang">↑</button>
 <button id="qNavFab" title="Mục lục câu hỏi" aria-label="Mục lục câu hỏi">☰</button>
-<div id="qNavOverlay"><div id="qNavPopup" role="dialog" aria-label="Mục lục câu hỏi"><div class="qnav-head"><b>Mục lục câu hỏi</b><button id="qNavClose" aria-label="Đóng">✕</button></div><div id="qNav"></div></div></div>
+<div id="qNavOverlay"><div id="qNavPopup" role="dialog" aria-label="Mục lục câu hỏi"><div class="qnav-head"><b id="qNavTitle">Mục lục</b><button id="qNavClose" aria-label="Đóng">✕</button></div><div id="qNav"></div></div></div>
 <script>
 "use strict";
 /* ============ DỮ LIỆU TRẮC NGHIỆM: {c: chương, q: câu hỏi, o: 4 đáp án, a: chỉ số đáp án đúng (0-3), t: mẹo nhớ} */
@@ -1638,19 +1639,43 @@ $("shuffleBtn").addEventListener("click",()=>{shuffle(qOrder);renderQuiz();windo
 $("wrongBtn").addEventListener("click",()=>{qWrongOnly=!qWrongOnly;$("wrongBtn").style.borderColor=qWrongOnly?"var(--accent)":"";renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 $("resetBtn").addEventListener("click",()=>{resetQuiz();clearProgress();renderQuiz();window.scrollTo({top:0,behavior:"smooth"});});
 /* ---- Muc luc cau hoi: nhan so cau de nhay toi, hien dung/sai ---- */
+/* ---- Muc luc dong theo tab ---- */
+const NAV_TITLES={quiz:"Mục lục trắc nghiệm",flash:"Mục lục câu hỏi ngắn",essay:"Mục lục tự luận",timeline:"Mục lục timeline",keys:"Mục lục ý chính"};
+function activeTab(){const t=document.querySelector(".tab.active");return t&&t.dataset.tab?t.dataset.tab:"quiz";}
+function jumpTo(id,openAcc){
+  document.getElementById("qNavOverlay").classList.remove("open");
+  const el=document.getElementById(id);if(!el)return;
+  if(openAcc)el.classList.add("open");
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+  el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1300);
+}
+function navNumBtn(nav,label,title,target,cls){
+  const b=document.createElement("button");
+  b.className="qn"+(cls?" "+cls:"");b.textContent=label;if(title)b.title=title;
+  b.addEventListener("click",()=>jumpTo(target));nav.appendChild(b);
+}
 function renderQNav(){
   const nav=document.getElementById("qNav");if(!nav)return;nav.innerHTML="";
-  qOrder.forEach((idx,n)=>{
-    const b=document.createElement("button");
-    b.className="qn"+(qRight.has(idx)?" ok":qWrong.has(idx)?" bad":"");
-    b.textContent=n+1;b.title="Di toi cau "+(n+1);
-    b.addEventListener("click",()=>{
-      document.getElementById("qNavOverlay").classList.remove("open");
-      const el=document.getElementById("qcard-"+idx);
-      if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1300);}
+  const tab=activeTab();
+  document.getElementById("qNavTitle").textContent=NAV_TITLES[tab]||"Mục lục";
+  if(tab==="quiz"){
+    qOrder.forEach((idx,n)=>{navNumBtn(nav,n+1,"Di toi cau "+(n+1),"qcard-"+idx,qRight.has(idx)?"ok":qWrong.has(idx)?"bad":"");});
+  }else if(tab==="flash"){
+    fOrder.forEach((idx,n)=>{navNumBtn(nav,n+1,(FLASH[idx].c?"Chuong "+FLASH[idx].c+" - ":"")+"Cau "+(n+1),"fcard-"+n);});
+  }else if(tab==="essay"){
+    ESSAYS.forEach((e,i)=>{
+      const b=document.createElement("button");b.className="qnl";b.textContent=(i+1)+". "+e.t;
+      b.addEventListener("click",()=>jumpTo("essay-"+i,true));nav.appendChild(b);
     });
-    nav.appendChild(b);
-  });
+  }else if(tab==="timeline"&&typeof TL_RAW!=="undefined"){
+    TL_RAW.forEach((it,i)=>{navNumBtn(nav,i+1,String(it[0]),"tl-"+i);});
+  }else if(tab==="keys"){
+    document.querySelectorAll("#panel-keys h3").forEach(h=>{
+      if(!h.id)return;
+      const b=document.createElement("button");b.className="qnl";b.textContent=h.textContent;
+      b.addEventListener("click",()=>jumpTo(h.id));nav.appendChild(b);
+    });
+  }
 }
 const qNavFab=document.getElementById("qNavFab"),qNavOverlay=document.getElementById("qNavOverlay");
 qNavFab.addEventListener("click",()=>{renderQNav();qNavOverlay.classList.add("open");});
@@ -1667,7 +1692,7 @@ function renderFlashList(){
   const list=$("flashList");list.innerHTML="";
   fOrder.forEach((idx,n)=>{
     const f=FLASH[idx];
-    const d=document.createElement("div");d.className="card";
+    const d=document.createElement("div");d.className="card";d.id="fcard-"+n;
     d.innerHTML='<div class="q-head"><span class="q-tag">Câu '+(n+1)+'</span>'
       +(f.c?'<span class="q-num">Chương '+f.c+'</span>':'')
       +'</div><p class="q-text">'+f.q+'</p>'
@@ -1680,8 +1705,8 @@ $("fcShuffle").addEventListener("click",()=>{shuffle(fOrder);renderFlashList();w
 /* ---- Essays ---- */
 function renderEssays(){
   const box=$("essayList");box.innerHTML="";
-  ESSAYS.forEach(e=>{
-    const d=document.createElement("div");d.className="acc";
+  ESSAYS.forEach((e,i)=>{
+    const d=document.createElement("div");d.className="acc";d.id="essay-"+i;
     d.innerHTML='<div class="acc-head"><span>'+e.t+'</span><span>＋</span></div><div class="acc-body">'+e.h+'</div>';
     d.querySelector(".acc-head").addEventListener("click",()=>{
       d.classList.toggle("open");
