@@ -229,7 +229,7 @@ footer.note{margin-top:26px;color:var(--muted);font-size:.85rem;border-top:1px s
 const QUIZ = [
  {
   "c": 1,
-  "q": "Ai là người viết tác phẩm &quot;Không tưởng&quot; (Utôpia)?",
+  "q": "Ai là người viết tác phẩm \"Không tưởng\" (Utôpia)?",
   "o": [
    "Xanh Xi Mông",
    "Campanenla",
@@ -699,7 +699,7 @@ const QUIZ = [
   "c": 3,
   "q": "Xã hội mà Việt Nam hướng đến trong của quá trình xây dựng chủ nghĩa xã hội là một xã hội như thế nào?",
   "o": [
-   "Xã hội &quot;dân giàu, nước mạnh, dân chủ, công bằng, văn minh&quot;",
+   "Xã hội \"dân giàu, nước mạnh, dân chủ, công bằng, văn minh\"",
    "Xã hội có sự phát triển công nghiệp hiện đại, thu nhập trung bình cao",
    "Xã hội có tốc độ phát triển cao, thu nhập cao.",
    "Xã hội bảo đảm thu nhập cao, công bằng văn minh cho nhân dân."
@@ -1393,7 +1393,7 @@ const QUIZ = [
  },
  {
   "c": 7,
-  "q": "Mô hình gia đình Việt Nam phổ biến trong bước chuyển biến từ &quot;xã hội nông nghiệp&quot; sang &quot;xã hội công nghiệp&quot; là mô hình nào?",
+  "q": "Mô hình gia đình Việt Nam phổ biến trong bước chuyển biến từ \"xã hội nông nghiệp\" sang \"xã hội công nghiệp\" là mô hình nào?",
   "o": [
    "Gia đình hạt nhân",
    "Gia đình truyền thống",
@@ -1429,7 +1429,7 @@ const QUIZ = [
  },
  {
   "c": 6,
-  "q": "Nguyên tắc nào được xem là &quot;hòn đá tảng&quot; trong chính sách tôn giáo của Đảng ta?",
+  "q": "Nguyên tắc nào được xem là \"hòn đá tảng\" trong chính sách tôn giáo của Đảng ta?",
   "o": [
    "Tôn trọng tự do tín ngưỡng",
    "Bài trừ mê tín dị đoan",
@@ -1685,8 +1685,8 @@ function buildChapChips(){
     b.addEventListener("click",()=>{qChap=v;qWrongOnly=false;rebuildOrder();buildChapChips();renderQuiz();});
     box.appendChild(b);
   };
-  mk(0,"Tất cả (90)");
-  for(let c=1;c<=6;c++)mk(c,"Chương "+c);
+  mk(0,"Tất cả (105)");
+  for(let c=1;c<=7;c++)mk(c,"Chương "+c);
 }
 function rebuildOrder(){qOrder=QUIZ.map((_,i)=>i).filter(i=>qChap===0||QUIZ[i].c===qChap);}
 function resetQuiz(){
